@@ -84,7 +84,7 @@ AstrBot 在给 LLM 发送聊天记录时会携带群友的自定义昵称，但�
 
 1. **匹配身份**：获取发送者 ID，查找映射表。
 2. **模式执行**：
-   - **安全模式 (推荐)**：插件会在 `ProviderRequest.system_prompt` 中追加一条指令（例如：`Address user 'Will' as 'Boss'`）。这样即便用户的名字本身是常用词汇，也不会发生错误的单词替换。
+   - **提示词模式**：插件会在 `ProviderRequest.system_prompt` 中追加一条指令（例如：`Address user 'Will' as 'Boss'`）。这样即便用户的名字本身是常用词汇，也不会发生错误的单词替换。
    - **全局模式**：通过 Python 的 `replace` 方法直接修改 `req.prompt` 中的文本。如果开启了 `enable_session_replace`，还会改写 `req.session` 中的历史片段。
 
 

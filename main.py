@@ -57,21 +57,21 @@ class UniNicknamePlugin(Star):
                     logger.warning(f"无法获取用户 {sender_id} 的原始昵称，跳过映射处理。")
                     return
 
-                working_mode = self.config.get("working_mode", "safe")
+                working_mode = self.config.get("working_mode", "prompt")
                 
-                if working_mode == "safe":
-                    # 安全模式：通过 System Prompt 引导 AI，不修改原始文本
+                if working_mode == "prompt":
+                    # 提示词模式：通过 System Prompt 引导 AI，不修改原始文本
                     # 这样可以避免 "I will" 变成 "I Boss" 的语义问题
                     instruction = f"\n[System Note: The current user '{original_nickname}' (ID: {sender_id}) should be addressed as '{custom_nickname}'. Please use this custom nickname when responding to them.]\n"
                     if req.system_prompt:
                         req.system_prompt += instruction
                     else:
                         req.system_prompt = instruction
-                    logger.debug(f"安全模式：向 System Prompt 注入昵称引导 ({original_nickname} -> {custom_nickname})")
+                    logger.debug(f"提示词模式：向 System Prompt 注入昵称引导 ({original_nickname} -> {custom_nickname})")
                 
                 elif working_mode == "global":
                     # 全局替换模式：高风险
-                    logger.warning(f"全局替换模式激活：正在修改用户 {sender_id} 的原始请求文本内容。")
+                    logger.warning(f"全局替换模式：正在修改用户 {sender_id} 的原始请求文本内容。")
                     
                     if req.prompt:
                         req.prompt = req.prompt.replace(original_nickname, custom_nickname)
